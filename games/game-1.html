@@ -6,10 +6,10 @@
 
 <meta charset="UTF-8">
 
-<title>Write your game's title here</title>
+<title>Write your game's title here{a = 5}</title>
 
 <script type="text/bitsyGameData" id="exportedGameData">
-Write your game's title here
+Write your game's title here{a = 5}
 
 # BITSY VERSION 8.12
 
@@ -20,7 +20,7 @@ Write your game's title here
 ! TXT_MODE 0
 
 PAL 0
-0,82,204
+202,155,65
 128,159,255
 255,255,255
 NAME blueprint
@@ -43,6 +43,7 @@ ROOM 0
 0,a,a,a,a,a,a,a,a,a,a,a,a,a,a,0
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 NAME example room
+ITM 0 11,8
 PAL 0
 TUNE 2
 
@@ -66,7 +67,7 @@ SPR A
 10111101
 00100100
 00100100
-POS 0 4,4
+POS 0 8,10
 
 SPR a
 00000000
@@ -79,7 +80,7 @@ SPR a
 00100100
 NAME cat
 DLG 0
-POS 0 8,12
+POS 0 9,5
 BLIP 1
 
 ITM 0
@@ -108,7 +109,14 @@ DLG 2
 BLIP 2
 
 DLG 0
-I'm a cat
+"""
+I'm a cat{
+  - {item "0"} == 1 ?
+    ...
+  - else ?
+    ...
+}
+"""
 NAME cat dialog
 
 DLG 1
@@ -121,6 +129,9 @@ NAME key dialog
 
 VAR a
 42
+
+VAR bob
+hello
 
 TUNE 1
 3d,0,0,0,3d5,0,0,0,3l,0,0,0,3s,0,0,0
