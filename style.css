@@ -1,3 +1,4 @@
+/* font from https://github.com/pixeldroid/fonts */
 @font-face {
   font-family: pixeldroid;
   src: url("pixeldroidMenuRegular.ttf") format("truetype");
@@ -48,6 +49,13 @@ body {
   width: 100vw;
   height: 100vh;
   gap: 0px;
+  padding: 1em;
+
+  /* padding-right: 160px;
+  padding-left: 160px; */
+  /* padding-top: 20px;
+  padding-bottom: 20px; */
+  box-sizing: border-box;
 }
 
 #container > * {
@@ -60,27 +68,38 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  width: fit-content;
+  /* width: fit-content; */
   transition: flex-grow 500ms;
+  margin: 1em;
+  padding: 0;
+  max-height: 100vh;
+  aspect-ratio: 1 / 1;
 }
 
 .removed {
   flex-grow: 0.00001;
 }
 
-.game-selector {
+.game-selector, .game-iframe{ 
   border: 0;
-  max-width: 512px;
-  max-height: 512px;
-  height: 100%;
-  width: 100%;
+  padding: 0;
+  /* max-width: 492px;
+  max-height: 492px;
+  min-width: 492px;
+  min-height: 492px; */
+  /* max-width: 492;
+  max-height: 492px; */
+  aspect-ratio: 1 / 1;
+  /* height: 100%; */
+  /* min-width: 492px;
+  max-width: 492px; */
+  /* width: // */
   background-color: blueviolet;
   font-size: 40px;
   /* padding: 1em; */
   box-shadow: 0.5em 0.5em 0px rgba(0, 0, 0, 0.75);
   box-sizing: content-box;
-  overflow: hidden;
-  
+  /* overflow: hidden; */
 }
 
 .game-title {
@@ -102,7 +121,7 @@ body {
   float: right;
 }
 
-iframe {
+/* iframe {
   border: 0;
   max-width: 512px;
   max-height: 512px;
@@ -110,7 +129,7 @@ iframe {
   width: 100%;
   font-size: 40px;
   box-shadow: 0.5em 0.5em 0px rgba(0, 0, 0, 0.75);
-}
+} */
 
 #background {
   display: flex;
@@ -123,14 +142,12 @@ iframe {
   justify-content: center;
   clear: both;
 
+  background: linear-gradient(270deg, #1dc3cc, #ff00ea);
+  background-size: 400% 400%;
 
-  
-    background: linear-gradient(270deg, #1dc3cc, #ff00ea);
-    background-size: 400% 400%;
-
-    -webkit-animation: AnimationName 16s ease infinite;
-    -moz-animation: AnimationName 16s ease infinite;
-    animation: AnimationName 16s ease infinite;
+  -webkit-animation: AnimationName 16s ease infinite;
+  -moz-animation: AnimationName 16s ease infinite;
+  animation: AnimationName 16s ease infinite;
 
 }
 

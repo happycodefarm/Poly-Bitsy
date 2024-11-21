@@ -1,4 +1,12 @@
+/*
+console.log(w)
+console.log(bitsy.getGameData())
+var world = parseWorld(bitsy.getGameData())
+console.log(world)
 
+
+
+*/
 let bitsies = {} // bitsy games list
 let gameSelectors = {} // game selectors
 
@@ -95,9 +103,18 @@ function getGamepadByIndex(index) {
   }
 }
 
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else if (document.exitFullscreen) {
+    document.exitFullscreen();
+  }
+}
+
 function setup() {
   console.log("Hello Multy-Bitsy")
   
+  // load game playlist
   fetch('playlist.json')
         .then(function (response) {
             return response.json();
@@ -111,6 +128,51 @@ function setup() {
 
   // window keydown event to iframes dispatcher (aka multi-bitsy)
   window.addEventListener("keydown", (e) => {
+    // if (e.key == "p") {
+    //   for (const bitsy of bitsies) {
+    //     bitsy.contentWindow?.location.reload()
+    //     bitsy.addEventListener('load', function() {
+    //       // the iframe is ready
+    //       console.log(('loaded'))
+    //       bitsy.contentWindow.addEventListener('message', (message) => {
+    //         let frankstEvent = new KeyboardEvent( message.data["type"], message.data )
+    //         bitsy.contentWindow.document.dispatchEvent( frankstEvent )
+    //         bitsy.contentWindow.document.body.style.background = 'transparent'
+    //       })
+    //     })
+    //   }
+    //   return
+    // }
+
+    
+    if (e.key === "f") {
+      toggleFullScreen()
+    }
+
+    if (e.key == 'q') { 
+      for (const bitsy of bitsies) {
+        bitsy.contentWindow.reset_cur_game()
+        bitsy.contentWindow.startNarrating( "ARGG", false /*isEnding*/ );
+      }
+      e.preventDefault()
+      return
+    }
+    if (e.key == 'b') {
+      for (const bitsy of bitsies) {
+        bitsy.contentWindow.startDialog("Hacked !")
+      }
+      e.preventDefault()
+      return
+    }
+    if (e.key == 'n') { 
+      for (const bitsy of bitsies) {
+        bitsy.contentWindow.startNarrating( "ARGG", false /*isEnding*/ );
+      }
+      e.preventDefault()
+      return
+    }
+    
+
     let clonedEvent = {type: e.type,key: e.key,keyCode: e.keyCode,code: e.code,which: e.which}
     for (const bitsy of bitsies) {
       bitsy.contentWindow?.postMessage(clonedEvent, "*")
@@ -151,8 +213,6 @@ function setup() {
 
   // dynamic ref to iframes and gameSelectors
    bitsies = document.getElementsByClassName("bitsy")
-  // gameSelectors = document.getElementsByClassName('game-selector')
-  //bitsies = document.querySelectorAll('iframe', '.game-selector')
   gameLoop() // start the game loop
 }
 
@@ -170,7 +230,6 @@ function gameLoop() {
     if (gamepad == null) {
       //console.log("nopad")
       continue
-
     }
 
     bitsy.right = gamepad.axes[gamepadAxesX] > 0.75 ||  gamepad.buttons[gamepadButtonRight].pressed
@@ -212,7 +271,6 @@ function gameLoop() {
           bitsy.waitx = false
          }, 200)
       }
-      
 
     } else if (bitsy.down && !bitsy.waitx) { // down direction
       bitsy.waitx = true
@@ -274,7 +332,6 @@ function gameLoop() {
          }, 200)
       }
       
-
     } else if (bitsy.left && !bitsy.waitx) { // left direction
       let event = {type:'keydown', key:'ArrowLeft', keyCode:37, code:'ArrowLeft', which:37 }
       bitsy?.contentWindow?.postMessage(event , "*");
