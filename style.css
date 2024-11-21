@@ -79,11 +79,14 @@ body {
   /* padding: 1em; */
   box-shadow: 0.5em 0.5em 0px rgba(0, 0, 0, 0.75);
   box-sizing: content-box;
+  overflow: hidden;
+  
 }
 
 .game-title {
   background-color: transparent;
   padding-left: 0.5em;
+  padding-right: 0.5em;
 }
 
 .game-title:hover {
@@ -92,6 +95,11 @@ body {
 
 .selected {
   background-color: #fff700;
+}
+
+.selected::after {
+  content: ">";
+  float: right;
 }
 
 iframe {

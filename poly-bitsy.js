@@ -33,15 +33,18 @@ function gamepadHandler(event, connected) {
     let gameSelector = document.createElement('div')
     gameSelector.classList.add('bitsy', 'game-selector')
     gameSelector.gamepadIndex = gamepad.index
+    gameSelector.selectionIndex = 0
 
-    for (game of playlist.bitsies) {
+    for (let [index, game] of playlist.bitsies.entries()) {
       let gameTitle = document.createElement('nav')
       gameTitle.className = 'game-title'
       gameTitle.innerHTML = game.title
+      gameTitle.gameIndex = index
+      if (index == 0) gameTitle.classList.add('selected') // set first selection
       gameSelector.appendChild(gameTitle)
 
       gameTitle.addEventListener("click", function() {
-        loadGame(gameSelector, 0, 0)
+        loadGame(gameSelector, index, gamepad.index)
       })
     }
 
@@ -155,10 +158,10 @@ function setup() {
 
 function gameLoop() {
 
-  if (navigator.getGamepads()[0]) {
-    let debug =   navigator.getGamepads()[0].axes[0].toString() + ", " + navigator.getGamepads()[0].axes[1].toString()// + ", " + navigator.getGamepads()[0].axes[2].toString()
-    document.getElementById("debug").innerText =debug
-  }
+  // if (navigator.getGamepads()[0]) {
+  //   let debug =   navigator.getGamepads()[0].axes[0].toString() + ", " + navigator.getGamepads()[0].axes[1].toString()// + ", " + navigator.getGamepads()[0].axes[2].toString()
+  //   document.getElementById("debug").innerText =debug
+  // }
  
   // handle gamepads inputs for all the bitsies (aka poly-bitsy)
   for (let bitsy of bitsies) {
@@ -176,13 +179,28 @@ function gameLoop() {
     bitsy.down = gamepad.axes[gamepadAxesY] > 0.75  ||  gamepad.buttons[gamepadButtonDown].pressed
 
     if (bitsy.up && !bitsy.waitx) { // up direction
-     
-      if (bitsy.classList['game-selector']) {
-        console.log("sele")
+      bitsy.waitx = true
+
+      if (bitsy.classList.contains('game-selector')) {
+        
+        bitsy.selectionIndex -= 1
+        if (bitsy.selectionIndex < 0) bitsy.selectionIndex = bitsy.childNodes.length -1
+        console.log(bitsy.selectionIndex)
+        for (title of bitsy.childNodes) {
+          if (title.gameIndex == bitsy.selectionIndex) {
+            title.classList.add('selected')
+          } else {
+            title.classList.remove('selected')
+          }
+        }
+
+        setTimeout(function(){ 
+          bitsy.waitx = false
+         }, 250)
+
       } else {
         let event = {type:'keydown', key:'ArrowUp', keyCode:38, code:'ArrowUp', which:38 }
         bitsy?.contentWindow?.postMessage(event , "*"); // send keydown event
-        bitsy.waitx = true
   
         setTimeout(function(){ 
           event.type = 'keyup'
@@ -197,34 +215,65 @@ function gameLoop() {
       
 
     } else if (bitsy.down && !bitsy.waitx) { // down direction
-      let event = {type:'keydown', key:'ArrowDown', keyCode:40, code:'ArrowDown', which:40 }
-      bitsy?.contentWindow?.postMessage(event , "*")
       bitsy.waitx = true
 
-      setTimeout(function(){ 
-        event.type = 'keyup'
-        bitsy?.contentWindow?.postMessage(event , "*");
-      }, 100)
+      if (bitsy.classList.contains('game-selector')) {
+        
+        bitsy.selectionIndex += 1
+        if (bitsy.selectionIndex >= bitsy.childNodes.length) bitsy.selectionIndex = 0
 
-      setTimeout(function(){
-        bitsy.down = false
-        bitsy.waitx = false
-       }, 200)
+        console.log(bitsy.selectionIndex)
+        for (title of bitsy.childNodes) {
+          if (title.gameIndex == bitsy.selectionIndex) {
+            title.classList.add('selected')
+          } else {
+            title.classList.remove('selected')
+          }
+        }
 
+        setTimeout(function(){ 
+          bitsy.waitx = false
+         }, 250)
+
+      } else {
+        let event = {type:'keydown', key:'ArrowDown', keyCode:40, code:'ArrowDown', which:40 }
+        bitsy?.contentWindow?.postMessage(event , "*")
+
+        setTimeout(function(){ 
+          event.type = 'keyup'
+          bitsy?.contentWindow?.postMessage(event , "*");
+        }, 100)
+
+        setTimeout(function(){
+          bitsy.down = false
+          bitsy.waitx = false
+        }, 200)
+      }
     } else if (bitsy.right && !bitsy.waitx) { // right direction
-      let event = {type:'keydown', key:'ArrowRight', keyCode:39, code:'ArrowRight', which:39 }
-      bitsy?.contentWindow?.postMessage(event , "*");
       bitsy.waitx = true
+      if (bitsy.classList.contains('game-selector')) {
 
-      setTimeout(function(){ 
-        event.type = 'keyup'
+        loadGame(bitsy, bitsy.selectionIndex, bitsy.gamepadIndex)
+
+        setTimeout(function(){ 
+          bitsy.waitx = false
+         }, 500)
+
+      } else {
+        let event = {type:'keydown', key:'ArrowRight', keyCode:39, code:'ArrowRight', which:39 }
         bitsy?.contentWindow?.postMessage(event , "*");
-      }, 100)
-
-      setTimeout(function(){
-        bitsy.right = false
-        bitsy.waitx = false
-       }, 200)
+        
+        setTimeout(function(){ 
+          event.type = 'keyup'
+          bitsy?.contentWindow?.postMessage(event , "*");
+        }, 100)
+  
+        setTimeout(function(){
+          bitsy.right = false
+          bitsy.waitx = false
+         }, 200)
+      }
+      
 
     } else if (bitsy.left && !bitsy.waitx) { // left direction
       let event = {type:'keydown', key:'ArrowLeft', keyCode:37, code:'ArrowLeft', which:37 }
