@@ -5,6 +5,30 @@ var world = parseWorld(bitsy.getGameData())
 console.log(world)
 
 
+console.log(bitsy.getGameData())
+var world = parseWorld(bitsy.getGameData())
+console.log(world)
+console.log(state)
+
+console.log(player)
+//state.room = 2
+world
+names
+room
+//player().room = 3
+//initRoom(3)
+//player.room = 3
+//player().x += 1
+console.log(getSpriteLeft())
+
+player().room = 1;
+player().x = 1
+player().y = 1
+state.room = 1;
+initRoom(1);
+
+
+
 
 */
 let bitsies = {} // bitsy games list
@@ -45,7 +69,7 @@ function gamepadHandler(event, connected) {
 
     for (let [index, game] of playlist.bitsies.entries()) {
       let gameTitle = document.createElement('nav')
-      gameTitle.className = 'game-title'
+      gameTitle.className = 'game-selector-item'
       gameTitle.innerHTML = game.title
       gameTitle.gameIndex = index
       if (index == 0) gameTitle.classList.add('selected') // set first selection
@@ -68,10 +92,12 @@ function gamepadHandler(event, connected) {
     // })
 
   } else { // remove iframe
-    document.getElementById(`bitsy-${gamepad.index}`).classList.add('removed')
-    document.getElementById(`bitsy-${gamepad.index}`).addEventListener("transitionend", (event) => {
-      document.getElementById(`bitsy-${gamepad.index}`).remove()
-    })
+    document.getElementById(`bitsy-${gamepad.index}`).remove()
+
+    // document.getElementById(`bitsy-${gamepad.index}`).classList.add('removed')
+    // document.getElementById(`bitsy-${gamepad.index}`).addEventListener("transitionend", (event) => {
+    //   document.getElementById(`bitsy-${gamepad.index}`).remove()
+    // })
       
     //document.getElementById(`bitsy-${gamepad.index+1}`).remove() // remove iframe container
   }
@@ -222,7 +248,14 @@ function gameLoop() {
   //   let debug =   navigator.getGamepads()[0].axes[0].toString() + ", " + navigator.getGamepads()[0].axes[1].toString()// + ", " + navigator.getGamepads()[0].axes[2].toString()
   //   document.getElementById("debug").innerText =debug
   // }
- 
+//   console.log(w)
+// console.log(bitsy.getGameData())
+// var world = parseWorld(bitsy.getGameData())
+// console.log(world)
+  let data = JSON.stringify(bitsies[0]?.contentWindow?.bitsy, null, 2)
+  let state = JSON.stringify(bitsies[0]?.contentWindow?.state, null, 2) ?? "null"
+
+  document.getElementById("debug").innerText = state
   // handle gamepads inputs for all the bitsies (aka poly-bitsy)
   for (let bitsy of bitsies) {
         
