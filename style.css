@@ -50,12 +50,54 @@ body {
   animation: AnimationName 16s ease infinite;
 }
 
+#blank {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  justify-self: center;
+  gap: 0.5em;
+}
+
 #debug {
   position: fixed;
   top:2em;
   left: 1em;
   background-color: transparent;
   color: black;
+}
+
+#help {
+  display: block;
+  position: fixed;
+  top:2em;
+  left: 1em;
+  padding: 0.5em;
+  background-color: whitesmoke;
+  color: black;
+  box-shadow: 0.5em 0.5em 0px rgba(0, 0, 0, 0.75);
+  z-index: 999;
+}
+
+#about {
+  display: block;
+  position: fixed;
+  top:2em;
+  left: 1em;
+  padding: 0.5em;
+  background-color: rgb(229, 255, 0);
+  color: black;
+  box-shadow: 0.5em 0.5em 0px rgba(0, 0, 0, 0.75);
+  z-index: 999;
+}
+
+ul {
+  list-style-type:none;
+}
+
+.hide {
+  display: none !important;
 }
 
 #container {
@@ -102,7 +144,7 @@ a:hover {
   background-color: #ff00eaee;
   align-self: flex-start;
   height: 1em;
-  /* z-index: 9999; */
+  z-index: 9999;
 }
 
 #title {

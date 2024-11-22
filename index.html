@@ -8,16 +8,33 @@
 </head>
 
 <body onload="setup()">
-	<div id="debug">
-	</div>
-	
 	<div id="background">
-		<div id="menu">
-			<a href="xx" id="about">?</a>
+		<div id="menu" class="hide">
+			<a href="#" id="show-help" onclick="document.getElementById('help').classList.toggle('hide')
+">?</a>
 			<div id="title">// Poly-Bitsy //</div>
 			<a href="" id="setup">¤</a>
 		</div>
+		<div id="blank"><div>Plug in one or more controllers</div><img src="controller.png"></img></div>
+
 	</div>
+	<div id="debug">
+	</div>
+	<div id="help" class="hide">
+		-- Help --
+		<ul>
+			<li>A: About</li>
+			<li>Q : Restart games</li>
+			<li>F : Toggle fullscreen mode</li>
+			<li>R : Restart Poly-Bitsy</li>
+			<li>H : Show help menu</li>
+			<li>S : Show settings</li>
+		</ul>	
+	</div>
+	<div id="about" class="hide">
+		Poly-bitsy is a type of polyphosphate that is used as a food additive.
+	</div>
+	
 	<div id="container">
 	
 	</div>

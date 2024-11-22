@@ -85,7 +85,8 @@ function gamepadHandler(event, connected) {
   const gamepad = event.gamepad;
   
   if (connected) { // add a new iframe
-    
+    document.getElementById('blank').classList.add('hide')
+
     let bitsyContainer = document.createElement('div')
     bitsyContainer.setAttribute('id', `bitsy-${gamepad.index}`)
     bitsyContainer.className = 'bitsy-container'
@@ -129,7 +130,10 @@ function gamepadHandler(event, connected) {
 
   } else { // remove iframe
     document.getElementById(`bitsy-${gamepad.index}`).remove()
+    if (document.getElementById('container').children.length==0) {
+      document.getElementById('blank').classList.remove('hide')
 
+    }
     // document.getElementById(`bitsy-${gamepad.index}`).classList.add('removed')
     // document.getElementById(`bitsy-${gamepad.index}`).addEventListener("transitionend", (event) => {
     //   document.getElementById(`bitsy-${gamepad.index}`).remove()
@@ -190,28 +194,21 @@ function setup() {
 
   // window keydown event to iframes dispatcher (aka multi-bitsy)
   window.addEventListener("keydown", (e) => {
-    // if (e.key == "p") {
-    //   for (const bitsy of bitsies) {
-    //     bitsy.contentWindow?.location.reload()
-    //     bitsy.addEventListener('load', function() {
-    //       // the iframe is ready
-    //       console.log(('loaded'))
-    //       bitsy.contentWindow.addEventListener('message', (message) => {
-    //         let frankstEvent = new KeyboardEvent( message.data["type"], message.data )
-    //         bitsy.contentWindow.document.dispatchEvent( frankstEvent )
-    //         bitsy.contentWindow.document.body.style.background = 'transparent'
-    //       })
-    //     })
-    //   }
-    //   return
-    // }
-
-    
-    if (e.key === "f") {
+    let key = e.key.toUpperCase()
+    if (key=== "F") {
       toggleFullScreen()
     }
 
-    if (e.key == 'q') { 
+    if (key=== "H") {
+      document.getElementById('help').classList.toggle('hide')
+    }
+
+    if (key=== "A") {
+      console.log("about")
+      document.getElementById('about').classList.toggle('hide')
+    }
+
+    if (key == 'Q') { 
       for (const bitsy of bitsies) {
         bitsy.contentWindow.reset_cur_game()
         bitsy.contentWindow.startNarrating( "ARGG", false /*isEnding*/ );
@@ -219,14 +216,14 @@ function setup() {
       e.preventDefault()
       return
     }
-    if (e.key == 'b') {
+    if (key == 'B') {
       for (const bitsy of bitsies) {
         bitsy.contentWindow.startDialog("Hacked !")
       }
       e.preventDefault()
       return
     }
-    if (e.key == 'n') { 
+    if (key == 'N') { 
       for (const bitsy of bitsies) {
         bitsy.contentWindow.startNarrating( "ARGG", false /*isEnding*/ );
       }
@@ -274,7 +271,7 @@ function setup() {
   })
 
   // dynamic ref to iframes and gameSelectors
-   bitsies = document.getElementsByClassName("bitsy")
+  bitsies = document.getElementsByClassName("bitsy")
   gameLoop() // start the game loop
 }
 
@@ -288,10 +285,12 @@ function gameLoop() {
 // console.log(bitsy.getGameData())
 // var world = parseWorld(bitsy.getGameData())
 // console.log(world)
-  let data = JSON.stringify(bitsies[0]?.contentWindow?.bitsy, null, 2)
-  let state = JSON.stringify(bitsies[0]?.contentWindow?.state, null, 2) ?? "null"
 
-  document.getElementById("debug").innerText = state
+  // let data = JSON.stringify(bitsies[0]?.contentWindow?.bitsy, null, 2)
+  // let state = JSON.stringify(bitsies[0]?.contentWindow?.state, null, 2) ?? "null"
+
+  // document.getElementById("debug").innerText = state
+
   // handle gamepads inputs for all the bitsies (aka poly-bitsy)
   for (let bitsy of bitsies) {
         
