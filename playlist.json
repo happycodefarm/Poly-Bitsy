@@ -2,13 +2,13 @@
   "bitsies": [
       {
           "title": "Bitsybitsy",
-          "path": "/games/game-1.html",
+          "path": "https://happycodefarm.github.io/Poly-Bitsy/games/game-1.html",
           "author": "Me",
           "version": 1.0
       },
       {
         "title": "Bitsybitsy again",
-        "path": "/games/game-2.html",
+        "path": "https://happycodefarm.github.io/Poly-Bitsy/games/game-2.html",
         "author": "Cat",
         "version": 2.0
       },
