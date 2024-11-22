@@ -177,9 +177,7 @@ function setup() {
   console.log("Hello Multy-Bitsy")
   
   // load game playlist
-  fetch('playlist.json', {
-    credentials: "*"
-  })
+  fetch('playlist.json')
         .then(function (response) {
             return response.json();
         })
