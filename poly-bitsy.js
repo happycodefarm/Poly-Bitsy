@@ -31,10 +31,46 @@ initRoom(1);
 
 
 */
+
+let playlist = {
+  "bitsies": [
+      {
+          "title": "Bitsybitsy",
+          "path": "/games/game-1.html",
+          "author": "Me",
+          "version": 1.0
+      },
+      {
+        "title": "Bitsybitsy again",
+        "path": "/games/game-2.html",
+        "author": "Cat",
+        "version": 2.0
+      },
+      {
+        "title": "more Bitsybitsy",
+        "path": "/games/game-3.html",
+        "author": "Dog",
+        "version": 1.1
+      },
+      {
+        "title": "more and more Bitsybitsy",
+        "path": "/games/game-4.html",
+        "author": "Bird",
+        "version": 1.1
+      },
+      {
+        "title": "last Bitsybitsy",
+        "path": "/games/game-5.html",
+        "author": "Mouse",
+        "version": 1.1
+      }
+  ]
+}
+
 let bitsies = {} // bitsy games list
 let gameSelectors = {} // game selectors
 
-let playlist = {} // game playlist
+//let playlist = {} // game playlist
 
 // gamepads axes and buttons mapping
 let gamepadAxesX = 1
@@ -141,16 +177,18 @@ function setup() {
   console.log("Hello Multy-Bitsy")
   
   // load game playlist
-  fetch('playlist.json')
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            playlist = data
-        })
-        .catch(function (err) {
-            console.log('error: ' + err);
-        });
+  // fetch('playlist.json', {
+  //   credentials: "*"
+  // })
+  //       .then(function (response) {
+  //           return response.json();
+  //       })
+  //       .then(function (data) {
+  //           playlist = data
+  //       })
+  //       .catch(function (err) {
+  //           console.log('error: ' + err);
+  //       });
 
   // window keydown event to iframes dispatcher (aka multi-bitsy)
   window.addEventListener("keydown", (e) => {
