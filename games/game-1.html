@@ -243,6 +243,14 @@ function startExportedGame() {
 	var defaultFontData = document.getElementById(defaultFontName).text.slice(1);
 	loadGame(gameCanvas, gameData, defaultFontData);
 	initSystem();
+
+	console.log('ionit')
+	// document.addEventListener('message', (message) => {
+	// 	console.log('fr')
+	// 	let frankstEvent = new KeyboardEvent( message.data["type"], message.data )
+	// 	document.dispatchEvent( frankstEvent )
+	// 	document.body.style.background = 'transparent'
+	// })
 }
 </script>
 

@@ -1,6 +1,7 @@
+"use strict"
 let gameSelectors = [] // game selectors
 let playlist = {} // game playlist
-
+let games = {} // all the games
 // gamepads axes and buttons mapping
 let gamepadAxesX = 1
 let gamepadAxesY = 2
@@ -166,6 +167,8 @@ class GameContainer {
     this.container.tabIndex = GameContainer.count
     this.needClick = true
 
+    this.muted = false
+
     this.setGamepadId(gamepadId)
     this.loadPlaylist(playlist)
 
@@ -253,8 +256,11 @@ class GameContainer {
     
     iframe.setAttribute('src', path)
     iframe.classList.add('game-iframe')
-    this.container.querySelector('.game-selector').replaceWith(iframe)
+    this.container.style.width = this.playlist.games[gameIndex].width ?? this.playlist.settings.width
+    this.container.style.height = this.playlist.games[gameIndex].height ?? this.playlist.settings.height
 
+    this.container.querySelector('.game-selector').replaceWith(iframe)
+   
     iframe.addEventListener('gamepadbutton', function(e) {
       // console.log(e)
       // console.log(iframe)
@@ -264,7 +270,7 @@ class GameContainer {
       }
       if (e.detail.direction == "up") {
         let clonedEvent = {type: (e.detail.state ? 'keydown': 'keyup'),key: 'ArrowUp', code: "ArrowUp", charCode: 0, keyCode: 38 }
-       // console.log('up')
+        // console.log('up')
         iframe.contentWindow.postMessage(clonedEvent, "*")
       } else if (e.detail.direction == "down") {
         //console.log('down')
@@ -280,15 +286,30 @@ class GameContainer {
         iframe.contentWindow.postMessage(clonedEvent, "*")
       }
     }.bind(this))
-    
-    // inject message event listner to iframe content
-    iframe.contentWindow.addEventListener('message', (message) => {
-      console.log(`got iframe message ${message.data["type"]}`)
-      let frankstEvent = new KeyboardEvent( message.data["type"], message.data )
-      iframe.contentWindow.document.dispatchEvent( frankstEvent )
-      iframe.contentWindow.document.body.style.background = 'transparent'
-    })
- 
+
+      // inject message event listner to iframe content
+    // iframe.onload = function() {
+      console.log('loaded')
+      //var iframeDoc = iframe.contentDocument || iframe.contentWindow.document
+      
+      this.checkIframeLoaded(iframe)      
+  }
+
+  checkIframeLoaded(iframe) {
+    let iframeDoc = iframe.contentDocument
+    // console.log(iframe.contentWindow)
+    // console.log(iframeDoc.readyState)
+    if (iframeDoc.readyState  == 'complete' ) {
+      // console.log(iframe.contentWindow)
+      iframe.contentWindow.addEventListener('message', (message) => {
+        // console.log(`got iframe message ${message.data["type"]}`)
+        let frankstEvent = new KeyboardEvent( message.data["type"], message.data )
+        iframe.contentWindow.document.dispatchEvent( frankstEvent )
+        iframe.contentWindow.document.body.style.background = 'transparent'
+      })
+      return
+    }
+   window.setTimeout(this.checkIframeLoaded, 1000, iframe)
   }
 
   setupMenu() {
@@ -342,11 +363,32 @@ class GameContainer {
     settings.className = 'menu-item'
     settings.innerText ='?'
     settings.addEventListener('click', () => {
-      // this.container.remove()
+      let iframe = this.container.querySelector('.game-iframe')
+
+      if (this.muted) {
+        iframe.contentWindow.soundPlayer.pauseTune()
+        this.muted = false
+      } else {
+        iframe.contentWindow.soundPlayer.resumeTune()
+        this.muted = true
+      }
+
+
+
+      // soundPlayer.resumeTune()
+    })
+
+    let reload = document.createElement('div')
+    reload.className = 'menu-item'
+    reload.innerText ='R'
+    reload.addEventListener('click', () => {
+      this.reload()
     })
 
     actionSelector.appendChild(settings)
+    actionSelector.appendChild(reload)
     actionSelector.appendChild(close)
+
     gameSelectorMenu.appendChild(actionSelector)
 
     this.container.appendChild(gameSelectorMenu)
@@ -482,11 +524,20 @@ function setup() {
         })
         .then(function (data) {
             playlist = data
-            console.log(playlist.music)
-            let game = new GameContainer(playlist)
-            gameSelectors.push(game)
+            console.log(playlist.games)
+            playlist.games.forEach((g,index) => {
+              console.log(g)
+              if (g.preload) {
+                let gameContainer = new GameContainer(playlist)
+                gameSelectors.push(gameContainer)
+                document.getElementById('container').appendChild(gameContainer.getNode())
+                gameContainer.loadGame(index)
+              }
+            });
+            // let game = new GameContainer(playlist)
+            // gameSelectors.push(game)
 
-            document.getElementById('container').appendChild(game.getNode())
+            // document.getElementById('container').appendChild(game.getNode())
 
             // let game2 = new GameContainer(playlist)
             // document.getElementById('container').appendChild(game2.getNode())
@@ -507,27 +558,6 @@ function setup() {
   window.addEventListener("keydown", (e) => {
     let key = e.key.toUpperCase()
 
-    if (key=== "K") {
-      console.log('send up')
-      let event = new CustomEvent("gamepadbutton", {
-        bubbles: true,
-        detail: { direction: 'up', state: false, index : 0 }
-      })
-      document.querySelectorAll(".game-selector, .game-iframe").forEach(element => {
-        element.dispatchEvent(event)
-      })
-    }
-
-    if (key=== "L") {
-      let event = new CustomEvent("gamepadbutton", {
-        bubbles: true,
-        detail: { direction: 'down', state: false, index : 0 }
-      })
-      document.querySelectorAll(".game-selector, .game-iframe").forEach(element => {
-        element.dispatchEvent(event)
-      })
-    }
-
     if (key=== "F") {
       toggleFullScreen()
     }
@@ -541,38 +571,35 @@ function setup() {
       document.getElementById('about').classList.toggle('hide')
     }
 
-    if (key == 'Q') { 
-      for (const bitsy of bitsies) {
-        bitsy.contentWindow.reset_cur_game()
-        bitsy.contentWindow.startNarrating( "ARGG", false /*isEnding*/ );
-      }
+    if (key == 'K') { 
+      document.querySelectorAll(".game-iframe").forEach(element => {
+        console.log('ok')
+        element.contentWindow.reset_cur_game()
+        element.contentWindow.startNarrating( "ARGG", false /*isEnding*/ );
+      })
       e.preventDefault()
       return
     }
 
     if (key == 'B') {
-      for (const bitsy of bitsies) {
-        bitsy.contentWindow.startDialog("Hacked !")
-      }
-      e.preventDefault()
-      return
-    }
+      document.querySelectorAll(".game-iframe").forEach(element => {
+        console.log('ok')
+        element.contentWindow.startDialog("Hacked !")
+      })
 
-    if (key == 'N') { 
-      for (const bitsy of bitsies) {
-        bitsy.contentWindow.startNarrating( "ARGG", false /*isEnding*/ );
-      }
       e.preventDefault()
       return
     }
-    if (key == 'L') { 
+   
+    // new game container
+    if (key == 'N') { 
       let game = new GameContainer(playlist)
       gameSelectors.push(game)
       
       document.getElementById('container').appendChild(game.getNode())
     }
 
-    if (key == 'Z') { 
+    if (key == 'R') { 
       gameSelectors.forEach((game) => 
         game.reload()
       )
