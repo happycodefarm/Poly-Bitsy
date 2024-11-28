@@ -359,23 +359,12 @@ class GameContainer {
       }
       
     })
+
     let settings = document.createElement('div')
     settings.className = 'menu-item'
     settings.innerText ='?'
     settings.addEventListener('click', () => {
-      let iframe = this.container.querySelector('.game-iframe')
-
-      if (this.muted) {
-        iframe.contentWindow.soundPlayer.pauseTune()
-        this.muted = false
-      } else {
-        iframe.contentWindow.soundPlayer.resumeTune()
-        this.muted = true
-      }
-
-
-
-      // soundPlayer.resumeTune()
+  
     })
 
     let reload = document.createElement('div')
@@ -385,7 +374,25 @@ class GameContainer {
       this.reload()
     })
 
+    let mute = document.createElement('div')
+    mute.className = 'menu-item'
+    mute.innerText ='M'
+    mute.addEventListener('click', () => {
+      let iframe = this.container.querySelector('.game-iframe')
+
+      if (this.muted) {
+        iframe?.contentWindow.soundPlayer.pauseTune()
+        this.muted = false
+        mute.classList.add('selected')
+      } else {
+        iframe?.contentWindow.soundPlayer.resumeTune()
+        this.muted = true
+        mute.classList.remove('selected')
+      }
+    })
+
     actionSelector.appendChild(settings)
+    actionSelector.appendChild(mute)
     actionSelector.appendChild(reload)
     actionSelector.appendChild(close)
 
