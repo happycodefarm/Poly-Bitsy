@@ -5,10 +5,17 @@ let games = {} // all the games
 // gamepads axes and buttons mapping
 let gamepadAxesX = 1
 let gamepadAxesY = 2
-let gamepadButtonRight = 1
-let gamepadButtonLeft = 3
-let gamepadButtonUp = 0
-let gamepadButtonDown = 2
+
+let gamepadButtonRight = 3
+let gamepadButtonLeft = 2
+let gamepadButtonUp = 1
+let gamepadButtonDown = 0
+
+let gamepadButtonRightAlt = 11
+let gamepadButtonLeftAlt = 10
+let gamepadButtonUpAlt = 9
+let gamepadButtonDownAlt = 8
+
 
 // gamepads class Singleton
 class GamePads {
@@ -55,6 +62,12 @@ class GamePads {
       let left = gamepad.axes[gamepadAxesX] < -0.75 ||  gamepad.buttons[gamepadButtonLeft].pressed
       let up = gamepad.axes[gamepadAxesY] < -0.75   ||  gamepad.buttons[gamepadButtonUp].pressed
       let down = gamepad.axes[gamepadAxesY] > 0.75  ||  gamepad.buttons[gamepadButtonDown].pressed
+
+      let rightAlt = gamepad.buttons[gamepadButtonRightAlt].pressed
+      let leftAlt = gamepad.buttons[gamepadButtonLeftAlt].pressed
+      let upAlt = gamepad.buttons[gamepadButtonUpAlt].pressed
+      let downAlt = gamepad.buttons[gamepadButtonDownAlt].pressed
+
 
       if (right && !gamepad.waitRight) {
         gamepad.waitRight = true // set wait flag
@@ -143,6 +156,95 @@ class GamePads {
           })
          }, 200)
       }
+
+      // alt
+      if (rightAlt && !gamepad.waitRightAlt) {
+        gamepad.waitRightAlt = true // set wait flag
+        const event = new CustomEvent("gamepadbutton", {
+          bubbles: true,
+          detail: {direction: "rightAlt", state:true, index: gamepad.index }
+        })
+        document.querySelectorAll(".game-selector, .game-iframe").forEach(element => {
+          element.dispatchEvent(event)
+        })
+        //console.log('right')
+        setTimeout(function(){ 
+          gamepad.waitRightAlt = false
+          const event = new CustomEvent("gamepadbutton", {
+            bubbles: true,
+            detail: {direction: "rightAlt", state:false, index: gamepad.index }
+          })
+          document.querySelectorAll(".game-selector, .game-iframe").forEach(element => {
+            element.dispatchEvent(event)
+          })
+         }, 200)
+      }
+
+      if (leftAlt && !gamepad.waitLeftAlt) {
+        gamepad.waitLeftAlt = true // set wait flag
+        const event = new CustomEvent("gamepadbutton", {
+          bubbles: true,
+          detail: {direction: "leftAlt", state:true, index: gamepad.index }
+        })
+        document.querySelectorAll(".game-selector, .game-iframe").forEach(element => {
+          element.dispatchEvent(event)
+        })
+        //console.log('left')
+        setTimeout(function(){ 
+          gamepad.waitLeftAlt = false
+          const event = new CustomEvent("gamepadbutton", {
+            bubbles: true,
+            detail: {direction: "leftAlt", state:false, index: gamepad.index }
+          })
+          document.querySelectorAll(".game-selector, .game-iframe").forEach(element => {
+            element.dispatchEvent(event)
+          })
+         }, 200)
+      }
+
+      if (upAlt && !gamepad.waitUpAlt) {
+        gamepad.waitUpAlt = true // set wait flag
+        const event = new CustomEvent("gamepadbutton", {
+          bubbles: true,
+          detail: {direction: "upAlt", state:true, index: gamepad.index }
+        })
+        document.querySelectorAll(".game-selector, .game-iframe").forEach(element => {
+          element.dispatchEvent(event)
+        })
+        //console.log('up')
+        setTimeout(function(){ 
+          gamepad.waitUpAlt = false
+          const event = new CustomEvent("gamepadbutton", {
+            bubbles: true,
+            detail: {direction: "upAlt", state:false, index: gamepad.index }
+          })
+          document.querySelectorAll(".game-selector, .game-iframe").forEach(element => {
+            element.dispatchEvent(event)
+          })
+         }, 200)
+      }
+
+      if (downAlt && !gamepad.waitDownAlt) {
+        gamepad.waitDownAlt = true // set wait flag
+        const event = new CustomEvent("gamepadbutton", {
+          bubbles: true,
+          detail: {direction: "downAlt", state:true, index: gamepad.index }
+        })
+        document.querySelectorAll(".game-selector, .game-iframe").forEach(element => {
+          element.dispatchEvent(event)
+        })
+        //console.log('down')
+        setTimeout(function(){ 
+          gamepad.waitDownAlt = false
+          const event = new CustomEvent("gamepadbutton", {
+            bubbles: true,
+            detail: {direction: "downAlt", state:false, index: gamepad.index }
+          })
+          document.querySelectorAll(".game-selector, .game-iframe").forEach(element => {
+            element.dispatchEvent(event)
+          })
+         }, 200)
+      }
     }
 
     requestAnimationFrame(this.gameLoop.bind(this))
@@ -166,7 +268,7 @@ class GameContainer {
     this.container.className = 'game-container'
     this.container.tabIndex = GameContainer.count
     this.needClick = true
-
+    this.altButton = false
     this.muted = false
 
     this.setGamepadId(gamepadId)
@@ -264,33 +366,55 @@ class GameContainer {
     iframe.classList.add('game-iframe')
     this.container.style.width = this.playlist.games[gameIndex].width ?? this.playlist.settings.width
     this.container.style.height = this.playlist.games[gameIndex].height ?? this.playlist.settings.height
+    this.altButton = this.playlist.games[gameIndex].altButton ?? false
 
     this.container.querySelector('.game-selector').replaceWith(iframe)
    
     iframe.addEventListener('gamepadbutton', function(e) {
-      // console.log(e)
+      console.log(e)
       // console.log(iframe)
       if (! this.gamepadSelectionIndex.has( e.detail.index) ) {
         console.log('return')
         return
       }
-      if (e.detail.direction == "up") {
-        let clonedEvent = {type: (e.detail.state ? 'keydown': 'keyup'),key: 'ArrowUp', code: "ArrowUp", charCode: 0, keyCode: 38 }
-        // console.log('up')
-        iframe.contentWindow.postMessage(clonedEvent, "*")
-      } else if (e.detail.direction == "down") {
-        //console.log('down')
-        let clonedEvent = {type: (e.detail.state ? 'keydown': 'keyup'),key: 'ArrowDown', code: "ArrowDown", charCode: 0, keyCode: 40}
-        iframe.contentWindow.postMessage(clonedEvent, "*")
-      } else if (e.detail.direction == "left") {
-        //console.log('left')
-        let clonedEvent = {type: (e.detail.state ? 'keydown': 'keyup'),key: 'ArrowLeft', code: "ArrowLeft", charCode: 0, keyCode: 37}
-        iframe.contentWindow.postMessage(clonedEvent, "*")
-      } else if (e.detail.direction == "right") {
-        //console.log('right') 
-        let clonedEvent = {type: (e.detail.state ? 'keydown': 'keyup'),key: 'ArrowRight', code: "ArrowRight", charCode: 0, keyCode: 39}
-        iframe.contentWindow.postMessage(clonedEvent, "*")
+      if (this.altButton) {
+        if (e.detail.direction == "upAlt") {
+          let clonedEvent = {type: (e.detail.state ? 'keydown': 'keyup'),key: 'ArrowUp', code: "ArrowUp", charCode: 0, keyCode: 38 }
+          // console.log('up')
+          iframe.contentWindow.postMessage(clonedEvent, "*")
+        } else if (e.detail.direction == "downAlt") {
+          //console.log('down')
+          let clonedEvent = {type: (e.detail.state ? 'keydown': 'keyup'),key: 'ArrowDown', code: "ArrowDown", charCode: 0, keyCode: 40}
+          iframe.contentWindow.postMessage(clonedEvent, "*")
+        } else if (e.detail.direction == "leftAlt") {
+          //console.log('left')
+          let clonedEvent = {type: (e.detail.state ? 'keydown': 'keyup'),key: 'ArrowLeft', code: "ArrowLeft", charCode: 0, keyCode: 37}
+          iframe.contentWindow.postMessage(clonedEvent, "*")
+        } else if (e.detail.direction == "rightAlt") {
+          //console.log('right') 
+          let clonedEvent = {type: (e.detail.state ? 'keydown': 'keyup'),key: 'ArrowRight', code: "ArrowRight", charCode: 0, keyCode: 39}
+          iframe.contentWindow.postMessage(clonedEvent, "*")
+        }
+      } else {
+        if (e.detail.direction == "up") {
+          let clonedEvent = {type: (e.detail.state ? 'keydown': 'keyup'),key: 'ArrowUp', code: "ArrowUp", charCode: 0, keyCode: 38 }
+          // console.log('up')
+          iframe.contentWindow.postMessage(clonedEvent, "*")
+        } else if (e.detail.direction == "down") {
+          //console.log('down')
+          let clonedEvent = {type: (e.detail.state ? 'keydown': 'keyup'),key: 'ArrowDown', code: "ArrowDown", charCode: 0, keyCode: 40}
+          iframe.contentWindow.postMessage(clonedEvent, "*")
+        } else if (e.detail.direction == "left") {
+          //console.log('left')
+          let clonedEvent = {type: (e.detail.state ? 'keydown': 'keyup'),key: 'ArrowLeft', code: "ArrowLeft", charCode: 0, keyCode: 37}
+          iframe.contentWindow.postMessage(clonedEvent, "*")
+        } else if (e.detail.direction == "right") {
+          //console.log('right') 
+          let clonedEvent = {type: (e.detail.state ? 'keydown': 'keyup'),key: 'ArrowRight', code: "ArrowRight", charCode: 0, keyCode: 39}
+          iframe.contentWindow.postMessage(clonedEvent, "*")
+        }
       }
+     
     }.bind(this))
 
       // inject message event listner to iframe content

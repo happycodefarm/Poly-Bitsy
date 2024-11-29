@@ -8,7 +8,8 @@
           "preload": true,
           "width" : "40vw",
           "height" : "40vw",
-          "keyboard" : true
+          "keyboard" : true,
+          "altButton" : true
       },
       {
         "title": "Bitsybitsy again",
