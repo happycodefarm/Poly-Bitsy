@@ -160,7 +160,7 @@ class GameContainer {
     ++GameContainer.count
 
     this.gameSelectionIndex = 0
-    this.gamepadSelectionIndex = 0
+    this.gamepadSelectionIndex = new Set([0])
 
     this.container = document.createElement('div')
     this.container.className = 'game-container'
@@ -222,13 +222,19 @@ class GameContainer {
     }
   }
 
-  setGamepadSelectionIndex(index) {
+  setGamepadSelectionIndex(index, add = false) {
+    console.log(index, add)
     let gamepadSelector = this.container.querySelector('.gamepad-selector')
     if (gamepadSelector === null) return
 
-    this.gamepadSelectionIndex = index
+    if (this.gamepadSelectionIndex.has(index)) {
+      this.gamepadSelectionIndex.delete(index)
+    } else {
+      add ? this.gamepadSelectionIndex.add(index) :this.gamepadSelectionIndex = new Set([index]) 
+    }
+   
     for (let gamepad of gamepadSelector.querySelectorAll('.menu-item')) {
-      if (gamepad.gamepadIndex == this.gamepadSelectionIndex) {
+      if (this.gamepadSelectionIndex.has(gamepad.gamepadIndex)) {
         gamepad.classList.add('selected')
         gamepad.scrollIntoView()
       } else {
@@ -264,7 +270,7 @@ class GameContainer {
     iframe.addEventListener('gamepadbutton', function(e) {
       // console.log(e)
       // console.log(iframe)
-      if (e.detail.index != this.gamepadSelectionIndex ) {
+      if (! this.gamepadSelectionIndex.has( e.detail.index) ) {
         console.log('return')
         return
       }
@@ -300,12 +306,13 @@ class GameContainer {
     // console.log(iframe.contentWindow)
     // console.log(iframeDoc.readyState)
     if (iframeDoc.readyState  == 'complete' ) {
-      // console.log(iframe.contentWindow)
+ 
       iframe.contentWindow.addEventListener('message', (message) => {
-        // console.log(`got iframe message ${message.data["type"]}`)
-        let frankstEvent = new KeyboardEvent( message.data["type"], message.data )
-        iframe.contentWindow.document.dispatchEvent( frankstEvent )
-        iframe.contentWindow.document.body.style.background = 'transparent'
+        // if (this.keyboard) {
+          let frankstEvent = new KeyboardEvent( message.data["type"], message.data )
+          iframe.contentWindow.document.dispatchEvent( frankstEvent )
+          iframe.contentWindow.document.body.style.background = 'transparent'
+        // }
       })
       return
     }
@@ -337,7 +344,7 @@ class GameContainer {
           
         } else {
           console.log(this.gamepadSelectionIndex)
-          this.setGamepadSelectionIndex(index)
+          this.setGamepadSelectionIndex(index, (e.shiftKey))
         }
       }.bind(this))
     }
@@ -440,7 +447,7 @@ class GameContainer {
 
     gameSelector.addEventListener('gamepadbutton', function(e) {
       console.log(e)
-      if (e.detail.index == this.gamepadSelectionIndex) {
+      if (this.gamepadSelectionIndex.has(e.detail.index)) {
         if (e.detail.direction == "up" && e.detail.state == true) {
           this.setGameSelectionIndex(this.gameSelectionIndex-1)
         } else if (e.detail.direction == "down" && e.detail.state == true) {
@@ -529,29 +536,20 @@ function setup() {
         .then(function (response) {
             return response.json()
         })
+
         .then(function (data) {
             playlist = data
             console.log(playlist.games)
-            playlist.games.forEach((g,index) => {
-              console.log(g)
-              if (g.preload) {
+            playlist.games.forEach((game,index) => {
+              console.log(game)
+              if (ggame.preload) {
                 let gameContainer = new GameContainer(playlist)
                 gameSelectors.push(gameContainer)
                 document.getElementById('container').appendChild(gameContainer.getNode())
                 gameContainer.loadGame(index)
               }
-            });
-            // let game = new GameContainer(playlist)
-            // gameSelectors.push(game)
-
-            // document.getElementById('container').appendChild(game.getNode())
-
-            // let game2 = new GameContainer(playlist)
-            // document.getElementById('container').appendChild(game2.getNode())
-
-            // let game3 = new GameContainer(playlist)
-            // document.getElementById('container').appendChild(game3.getNode())
-
+            })
+         
             if (playlist.music) {
               var sound = new Sound(playlist.music, 100, true)
               //sound.start()
@@ -559,7 +557,7 @@ function setup() {
         })
         .catch(function (err) {
           console.log('error: ' + err)
-        });
+        })
 
   // window keydown event to iframes dispatcher (aka multi-bitsy)
   window.addEventListener("keydown", (e) => {
@@ -610,21 +608,24 @@ function setup() {
       gameSelectors.forEach((game) => 
         game.reload()
       )
+      return
     }
     
     let clonedEvent = {type: e.type,key: e.key,keyCode: e.keyCode,code: e.code,which: e.which}
-    document.querySelectorAll(".game-iframe").forEach(element => {
+    document.querySelectorAll(".game-iframe").forEach(iframe => {
       console.log('ok')
-      element.contentWindow.postMessage(clonedEvent, "*")
+      if (iframe.keyboard == true) {
+        iframe.contentWindow.postMessage(clonedEvent, "*")
+      }
     })
   })
 
   // window keyup event to iframes dispatcher (aka multi-bitsy)
   window.addEventListener("keyup", (e) => {
     let clonedEvent = {type: e.type,key: e.key,keyCode: e.keyCode,code: e.code,which: e.which}
-    document.querySelectorAll(".game-iframe").forEach(element => {
+    document.querySelectorAll(".game-iframe").forEach(iframe => {
       console.log('ok')
-      element.contentWindow.postMessage(clonedEvent, "*")
+      iframe.contentWindow.postMessage(clonedEvent, "*")
     })
   })
 

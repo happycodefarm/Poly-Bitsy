@@ -7,14 +7,16 @@
           "version": 1.0,
           "preload": true,
           "width" : "40vw",
-          "height" : "40vw"
+          "height" : "40vw",
+          "keyboard" : true
       },
       {
         "title": "Bitsybitsy again",
         "path": "/games/game-1.html",
         "preload": true,
         "author": "Cat",
-        "version": 2.0
+        "version": 2.0,
+        "keyboard" : false
       },
       {
         "title": "more Bitsybitsy",
@@ -75,6 +77,7 @@
   "music" : "Dancefloor.mp3",
   "settings" : {
     "width" : "400px",
-    "height" : "400px"
+    "height" : "400px",
+    "keyboard" : false
   }
 }
