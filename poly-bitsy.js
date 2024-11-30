@@ -1,7 +1,7 @@
 "use strict"
-let gameSelectors = [] // game selectors
+let gameContainers = [] // game selectors
 let playlist = {} // game playlist
-let games = {} // all the games
+
 // gamepads axes and buttons mapping
 let gamepadAxesX = 1
 let gamepadAxesY = 2
@@ -58,6 +58,8 @@ class GamePads {
   gameLoop() {
 
     for (let gamepad of navigator.getGamepads()) {
+      if (!gamepad) continue
+
       let right = gamepad.axes[gamepadAxesX] > 0.75 ||  gamepad.buttons[gamepadButtonRight].pressed
       let left = gamepad.axes[gamepadAxesX] < -0.75 ||  gamepad.buttons[gamepadButtonLeft].pressed
       let up = gamepad.axes[gamepadAxesY] < -0.75   ||  gamepad.buttons[gamepadButtonUp].pressed
@@ -270,6 +272,7 @@ class GameContainer {
     this.needClick = true
     this.altButton = false
     this.muted = false
+    this.keyboard = true
 
     this.setGamepadId(gamepadId)
     this.loadPlaylist(playlist)
@@ -305,8 +308,9 @@ class GameContainer {
       }
     }.bind(this)
   }
-
   setGameSelectionIndex(index) {
+    if (this.playlist.games.length == 0) return
+
     let gameSelector = this.container.querySelector('.game-selector')
     if (gameSelector === null) return
     if (index < 0) index = this.playlist.games.length -1
@@ -427,16 +431,11 @@ class GameContainer {
 
   checkIframeLoaded(iframe) {
     let iframeDoc = iframe.contentDocument
-    // console.log(iframe.contentWindow)
-    // console.log(iframeDoc.readyState)
-    if (iframeDoc.readyState  == 'complete' ) {
- 
+    if (iframeDoc.readyState  == 'complete' ) {      
       iframe.contentWindow.addEventListener('message', (message) => {
-        // if (this.keyboard) {
           let frankstEvent = new KeyboardEvent( message.data["type"], message.data )
           iframe.contentWindow.document.dispatchEvent( frankstEvent )
           iframe.contentWindow.document.body.style.background = 'transparent'
-        // }
       })
       return
     }
@@ -445,7 +444,6 @@ class GameContainer {
 
   setupMenu() {
     // menu container
-
     let gameSelectorMenu = document.createElement('div')
     gameSelectorMenu.className = 'game-selector-menu'
     
@@ -458,20 +456,30 @@ class GameContainer {
       gamepadItem.className = 'menu-item'
       gamepadItem.innerHTML = `g${index}`
       gamepadItem.gamepadIndex = index
+      if (index == 0) gamepadItem.classList.add('selected')
       gamepadSelector.appendChild(gamepadItem)
 
       gamepadItem.addEventListener("click", function(e) {
-        if (this.needClick === true) {  
-          console.log("need click")        
-          this.needClick = false
-          e.preventDefault()
-          
-        } else {
-          console.log(this.gamepadSelectionIndex)
-          this.setGamepadSelectionIndex(index, (e.shiftKey))
-        }
+        console.log("need click")        
+        this.needClick = false
+        e.preventDefault()
+        console.log(this.gamepadSelectionIndex)
+        this.setGamepadSelectionIndex(index, (e.shiftKey))
       }.bind(this))
     }
+
+    let keyboardItem = document.createElement('div')
+    keyboardItem.className = 'menu-item'
+    keyboardItem.classList.add('selected')
+    keyboardItem.innerHTML = 'K'
+    keyboardItem.addEventListener("click", function(e) {
+      console.log("need click")        
+      this.needClick = false
+      this.keyboard = !this.keyboard
+      this.keyboard ? keyboardItem.classList.add('selected') : keyboardItem.classList.remove('selected')
+      console.log(this)
+    }.bind(this))
+    gamepadSelector.appendChild(keyboardItem)
 
     gameSelectorMenu.appendChild(gamepadSelector)
     this.setGamepadSelectionIndex(this.gamepadSelectionIndex)
@@ -479,18 +487,20 @@ class GameContainer {
     let actionSelector = document.createElement('div')
     actionSelector.className = 'action-selector'
 
+    // close button
     let close = document.createElement('div')
     close.className = 'menu-item'
     close.innerText ='X'
     close.addEventListener('click', () => {
       this.container.remove()
-      var index = gameSelectors.indexOf(this)
+      var index = gameContainers.indexOf(this)
       if (index > -1) {
-        gameSelectors.splice(index, 1)
+        gameContainers.splice(index, 1)
       }
       
     })
 
+    // settings button
     let settings = document.createElement('div')
     settings.className = 'menu-item'
     settings.innerText ='?'
@@ -498,6 +508,7 @@ class GameContainer {
   
     })
 
+    // reload button
     let reload = document.createElement('div')
     reload.className = 'menu-item'
     reload.innerText ='R'
@@ -505,6 +516,7 @@ class GameContainer {
       this.reload()
     })
 
+    // mute button
     let mute = document.createElement('div')
     mute.className = 'menu-item'
     mute.innerText ='M'
@@ -556,14 +568,14 @@ class GameContainer {
         }
       })
 
-      gameTitle.addEventListener("click", function(e) {
+      gameTitle.addEventListener("click", (e) => {
         if (this.needClick === true) {
           this.needClick = false
           e.preventDefault()
         } else {
           this.loadGame(index)
         }
-      }.bind(this))
+      })
     }
     
     this.container.appendChild(gameSelector)
@@ -666,9 +678,9 @@ function setup() {
             console.log(playlist.games)
             playlist.games.forEach((game,index) => {
               console.log(game)
-              if (ggame.preload) {
+              if (game.preload) {
                 let gameContainer = new GameContainer(playlist)
-                gameSelectors.push(gameContainer)
+                gameContainers.push(gameContainer)
                 document.getElementById('container').appendChild(gameContainer.getNode())
                 gameContainer.loadGame(index)
               }
@@ -723,23 +735,22 @@ function setup() {
     // new game container
     if (key == 'N') { 
       let game = new GameContainer(playlist)
-      gameSelectors.push(game)
+      gameContainers.push(game)
       
       document.getElementById('container').appendChild(game.getNode())
     }
 
     if (key == 'R') { 
-      gameSelectors.forEach((game) => 
+      gameContainers.forEach((game) => 
         game.reload()
       )
       return
     }
     
     let clonedEvent = {type: e.type,key: e.key,keyCode: e.keyCode,code: e.code,which: e.which}
-    document.querySelectorAll(".game-iframe").forEach(iframe => {
-      console.log('ok')
-      if (iframe.keyboard == true) {
-        iframe.contentWindow.postMessage(clonedEvent, "*")
+    gameContainers.forEach((game) => {
+      if (game.keyboard) {
+        game.getNode().querySelector(".game-iframe")?.contentWindow.postMessage(clonedEvent, "*")
       }
     })
   })
@@ -754,5 +765,5 @@ function setup() {
   })
 
   // dynamic ref to game containers
-  games = document.getElementsByClassName("game-container")
+  // games = document.getElementsByClassName("game-container")
 }
