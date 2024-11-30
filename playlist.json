@@ -1,6 +1,16 @@
 {
   "games": [
-      {
+           {
+          "title": "Bitsybitsy",
+          "path": "/games/game-1.html",
+          "author": "Me",
+          "version": 1.0,
+          "preload": true,
+          "width" : "40vw",
+          "height" : "40vw",
+          "keyboard" : true,
+          "altButton" : true
+      },{
           "title": "Bitsybitsy",
           "path": "/games/game-5.html",
           "author": "Me",

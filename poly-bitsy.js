@@ -65,10 +65,10 @@ class GamePads {
       let up = gamepad.axes[gamepadAxesY] < -0.75   ||  gamepad.buttons[gamepadButtonUp].pressed
       let down = gamepad.axes[gamepadAxesY] > 0.75  ||  gamepad.buttons[gamepadButtonDown].pressed
 
-      let rightAlt = gamepad.buttons[gamepadButtonRightAlt].pressed
-      let leftAlt = gamepad.buttons[gamepadButtonLeftAlt].pressed
-      let upAlt = gamepad.buttons[gamepadButtonUpAlt].pressed
-      let downAlt = gamepad.buttons[gamepadButtonDownAlt].pressed
+      let rightAlt = gamepad.buttons[gamepadButtonRightAlt]?.pressed ?? false
+      let leftAlt = gamepad.buttons[gamepadButtonLeftAlt]?.pressed ?? false
+      let upAlt = gamepad.buttons[gamepadButtonUpAlt]?.pressed ?? false
+      let downAlt = gamepad.buttons[gamepadButtonDownAlt]?.pressed ?? false
 
 
       if (right && !gamepad.waitRight) {
@@ -455,6 +455,7 @@ class GameContainer {
       let gamepadItem = document.createElement('div')
       gamepadItem.className = 'menu-item'
       gamepadItem.innerHTML = `g${index}`
+      // gamepadItem.title = `Gamepad ${index}`
       gamepadItem.gamepadIndex = index
       if (index == 0) gamepadItem.classList.add('selected')
       gamepadSelector.appendChild(gamepadItem)
@@ -463,7 +464,7 @@ class GameContainer {
         console.log("need click")        
         this.needClick = false
         e.preventDefault()
-        console.log(this.gamepadSelectionIndex)
+       // console.log(this.gamepadSelectionIndex)
         this.setGamepadSelectionIndex(index, (e.shiftKey))
       }.bind(this))
     }
@@ -472,13 +473,13 @@ class GameContainer {
     keyboardItem.className = 'menu-item'
     keyboardItem.classList.add('selected')
     keyboardItem.innerHTML = 'K'
-    keyboardItem.addEventListener("click", function(e) {
-      console.log("need click")        
+    keyboardItem.addEventListener("click", (e) => {
+      //console.log("need click")        
       this.needClick = false
+      e.preventDefault()
       this.keyboard = !this.keyboard
       this.keyboard ? keyboardItem.classList.add('selected') : keyboardItem.classList.remove('selected')
-      console.log(this)
-    }.bind(this))
+    })
     gamepadSelector.appendChild(keyboardItem)
 
     gameSelectorMenu.appendChild(gamepadSelector)
@@ -491,20 +492,20 @@ class GameContainer {
     let close = document.createElement('div')
     close.className = 'menu-item'
     close.innerText ='X'
-    close.addEventListener('click', () => {
+    close.addEventListener('click', (e) => {
       this.container.remove()
       var index = gameContainers.indexOf(this)
       if (index > -1) {
         gameContainers.splice(index, 1)
       }
-      
+      e.preventDefault()
     })
 
     // settings button
     let settings = document.createElement('div')
     settings.className = 'menu-item'
     settings.innerText ='?'
-    settings.addEventListener('click', () => {
+    settings.addEventListener('click', (e) => {
   
     })
 
@@ -512,15 +513,16 @@ class GameContainer {
     let reload = document.createElement('div')
     reload.className = 'menu-item'
     reload.innerText ='R'
-    reload.addEventListener('click', () => {
+    reload.addEventListener('click', (e) => {
       this.reload()
+      e.preventDefault()
     })
 
     // mute button
     let mute = document.createElement('div')
     mute.className = 'menu-item'
     mute.innerText ='M'
-    mute.addEventListener('click', () => {
+    mute.addEventListener('click', (e) => {
       let iframe = this.container.querySelector('.game-iframe')
 
       if (this.muted) {
@@ -532,6 +534,7 @@ class GameContainer {
         this.muted = true
         mute.classList.remove('selected')
       }
+      e.preventDefault()
     })
 
     actionSelector.appendChild(settings)

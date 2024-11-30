@@ -11,6 +11,7 @@
 * {
   user-select: none;
 }
+
 body {
   margin: 0;
   border: 0;
@@ -114,13 +115,34 @@ ul {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-
+  overflow:auto;
   justify-content: space-evenly;
   width: 100vw;
   height: 100vh;
   align-items: center;
   box-sizing: border-box;
 }
+
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #eeff00 #8f54a0; 
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 30px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background:#8f54a0;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #eeff00;
+    border-radius: 0px;
+    border: 0px solid #000000;
+  }
 
 #container > * {
   top: 0;
@@ -171,7 +193,7 @@ a:hover {
   transition: all .25s ease-out;
   /* flex-direction: column; */
   background-color: rgb(205, 168, 210);
-
+  /* outline: #1dc3cc 3px solid; */
   /* aspect-ratio: 1 / 1; */
 }
 
@@ -181,7 +203,7 @@ a:hover {
   /* animation: focus .2s none; */
   background-color: rgb(206, 71, 224);
 
-  /* outline: none; */
+  outline: none;
 }
 
 .removed {
@@ -200,6 +222,12 @@ a:hover {
 
 .game-selector-menu > div > div:hover {
   color: #1dc3cc;
+  cursor:pointer;
+}
+
+.game-selector-menu > div > div:active {
+  color: #1dc3cc;
+  cursor:grabbing;
 }
 
 .gamepad-selector {
@@ -253,6 +281,14 @@ a:hover {
 
 .selected {
   background-color: #fff700 !important;
+}
+
+.selected:active {
+  background-color: #c7c100 !important;
+}
+
+.selected:hover {
+  cursor: pointer;
 }
 
 .game-selector-item.selected::after {
