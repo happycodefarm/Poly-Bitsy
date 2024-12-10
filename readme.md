@@ -35,7 +35,9 @@ Il permet de définir des paramètres généraux et la listes des Bitsies jouabl
 - L'objet optionnel "music" définit un fichier mp3 à utiliser comme musique de fond.
 
 ### Limitations
-Pour avoir accès aux gamepads Poly-Bisty a besoin d'être hébergé sur un serveur Web.
+- Pour l'instant Poly-Bitsy ne fonctionne que sur Firefox avec les gampads.
+
+- Pour avoir accès aux gamepads Poly-Bisty a besoin d'être hébergé sur un serveur Web.
 
 > Pour utiliser Poly-Bitsy sur un ordinateur, un serveur Web peut être localement initié depuis le terminal (Linux, MacOs) ou l'invité de commande (Windows) en exécutant cette commande depuis le dossier racine du Poly-Bitsy :
 
