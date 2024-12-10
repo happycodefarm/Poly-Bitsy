@@ -1,6 +1,6 @@
 # POLY-BITSY
 
-## Description
+## Déscription
 Poly-Bitsy est un outil de pésentation pour [Bitsy](https://www.bitsy.org) permettant à la fois de créer des playlists de Bitsies et de contrôler plusieurs Bitsies simultanement ou indépendament au clavier ou avec un ou plusieurs gamepads sur une page Web.
 
 ### Un gamepad <-> un bitsy
@@ -32,7 +32,7 @@ Il permet de définir des paramètres généraux et la listes des Bitsies jouabl
 - L'objet optionnel "music" définit un fichier mp3 à utiliser comme musique de fond.
 
 ### Limitations
-Pour avoir accès au gamepads Poly-Bisty a besoin d'être hébergé sur un serveur Web.
+Pour avoir accès aux gamepads Poly-Bisty a besoin d'être hébergé sur un serveur Web.
 
 > Pour utiliser Poly-Bitsy sur un ordinateur, un serveur Web peut être localement initié depuis le terminal (Linux, MacOs) ou l'invité de commande (Windows) en exécutant cette commande depuis le dossier racine du Poly-Bitsy :
 
