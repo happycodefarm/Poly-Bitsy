@@ -387,7 +387,7 @@ class GameContainer {
 
   loadGame(gameIndex) {
     let iframe = document.createElement("iframe")
-    let path = this.playlist.games[gameIndex].path
+    let path = location.href.replace(/[^/]*$/, '')+this.playlist.games[gameIndex].path
     
     iframe.setAttribute('src', path)
     iframe.classList.add('game-iframe')
