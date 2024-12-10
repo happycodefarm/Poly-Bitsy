@@ -36,7 +36,7 @@ Il permet de définir des paramètres généraux et la listes des Bitsies jouabl
 - L'objet optionnel "music" définit un fichier mp3 à utiliser comme musique de fond.
 
 ### Interface
-![Poly-Bitsy interface](poly-bitsy.jpg?raw=true)
+![Poly-Bitsy interface](poly-bitsy.jpg)
 
 Raccourcis clavier :
 - N : Nouvelle playlist / Bitsy.
@@ -47,7 +47,7 @@ Raccourcis clavier :
 - A : A propos.
 
 Menu des playlistes :
-- g0, g1, g2, g3 : Selection du gamepad associé, selection multiple avec la touche Shift (majuscule).
+- g0, g1, g2, g3 : Selection du ou des gamepads associés, selection multiple avec la touche Shift (majuscule).
 - K : Activation du clavier.
 - M : Mute
 - R : Relancer le jeu.
