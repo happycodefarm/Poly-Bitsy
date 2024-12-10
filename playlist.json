@@ -1,94 +1,55 @@
 {
-  "games": [
-           {
-          "title": "Bitsybitsy",
-          "path": "/games/game-1.html",
-          "author": "Me",
-          "version": 1.0,
-          "preload": true,
-          "width" : "40vw",
-          "height" : "40vw",
-          "keyboard" : true,
-          "altButton" : true
-      },{
-          "title": "Bitsybitsy",
-          "path": "/games/game-5.html",
-          "author": "Me",
-          "version": 1.0,
-          "preload": true,
-          "width" : "40vw",
-          "height" : "40vw",
-          "keyboard" : true,
-          "altButton" : true
-      },
-      {
-        "title": "Bitsybitsy again",
-        "path": "/games/game-1.html",
-        "preload": true,
-        "author": "Cat",
-        "version": 2.0,
-        "keyboard" : false
-      },
-      {
-        "title": "more Bitsybitsy",
-        "path": "/games/game-3.html",
-        "author": "Dog",
-        "version": 1.1
-      },
-      {
-        "title": "more and more Bitsybitsy",
-        "path": "/games/game-4.html",
-        "author": "Bird",
-        "version": 1.1
-      },
-      {
-        "title": "last Bitsybitsy",
-        "path": "/games/game-5.html",
-        "author": "Mouse",
-        "version": 1.1
-      },
-      {
-        "title": "Bitsybitsy",
-        "path": "/games/game-5.html",
-        "author": "Me",
-        "version": 1.0
-    },
-    {
-      "title": "Bitsybitsy again",
-      "path": "/games/game-2.html",
-      "author": "Cat",
-      "version": 2.0
-    },
-    {
-      "title": "more Bitsybitsy",
-      "path": "/games/game-3.html",
-      "author": "Dog",
-      "version": 1.1
-    },
-    {
-      "title": "more and more Bitsybitsy",
-      "path": "/games/game-4.html",
-      "author": "Bird",
-      "version": 1.1
-    },
-    {
-      "title": "last Bitsybitsy",
-      "path": "/games/game-5.html",
-      "author": "Mouse",
-      "version": 1.1
-    },
-    {
-      "title": "Bitsybitsy",
-      "path": "/games/game-5.html",
-      "author": "Me",
-      "version": 1.0
-  }
-  ],
-
-  "music" : "Dancefloor.mp3",
   "settings" : {
     "width" : "400px",
     "height" : "400px",
     "keyboard" : false
-  }
+  },
+
+  "games": [
+    {
+      "title": "Game #1",
+      "path": "/games/game-1.html",
+      "author": "Paulette",
+      "version": 1.0,
+      "preload": false,
+      "width" : "500px",
+      "height" : "500px",
+      "keyboard" : true,
+      "altButton" : true
+    },
+    {
+      "title": "Game #2",
+      "path": "/games/game-2.html",
+      "author": "Rozzze",
+      "version": 1.0,
+      "preload": false,
+      "width" : "20vw",
+      "height" : "20vw",
+      "keyboard" : true,
+      "altButton" : true
+    },
+    {
+      "title": "Game #3",
+      "path": "/games/game-3.html",
+      "author": "Leslie",
+      "preload": false,
+      "version": 2.0,
+      "keyboard" : false
+    },
+    {
+      "title": "Game #4",
+      "path": "/games/game-4.html",
+      "author": "Bergamote",
+      "version": 1.1
+    },
+    {
+      "title": "Game #5",
+      "path": "/games/game-5.html",
+      "author": "Bip",
+      "version": 1.0
+    }
+  ],
+  
+  "music" : "Dancefloor.mp3"
+
 }

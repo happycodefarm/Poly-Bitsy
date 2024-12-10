@@ -56,7 +56,6 @@ class GamePads {
   }
 
   gameLoop() {
-
     for (let gamepad of navigator.getGamepads()) {
       if (!gamepad) continue
 
@@ -250,6 +249,30 @@ class GamePads {
     }
 
     requestAnimationFrame(this.gameLoop.bind(this))
+  }
+
+  getHelper() {
+    let gamepadHelper = document.createElement('div')
+    gamepadHelper.id = 'gamepad-helper'
+    gamepadHelper.addEventListener("gamepadconnected", (e) => {
+      console.log(
+        "Gamepad connected at index %d: %s. %d buttons, %d axes.",
+        e.gamepad.index,
+        e.gamepad.id,
+        e.gamepad.buttons.length,
+        e.gamepad.axes.length,
+      )
+    })
+
+    // gamepad disconnection event handler
+    gamepadHelper.addEventListener("gamepaddisconnected", (e) => {
+      console.log(
+        "Gamepad disconnected from index %d: %s",
+        e.gamepad.index,
+        e.gamepad.id,
+      )
+    })
+    return gamepadHelper
   }
 
   info() {
@@ -447,10 +470,11 @@ class GameContainer {
     let gameSelectorMenu = document.createElement('div')
     gameSelectorMenu.className = 'game-selector-menu'
     
-    // gamepad selector
+    // gamepad and keyboard selector
     let gamepadSelector = document.createElement('div')
     gamepadSelector.className = 'gamepad-selector'
 
+    // gamepads
     for (let index = 0; index<4; index++) {
       let gamepadItem = document.createElement('div')
       gamepadItem.className = 'menu-item'
@@ -464,11 +488,11 @@ class GameContainer {
         console.log("need click")        
         this.needClick = false
         e.preventDefault()
-       // console.log(this.gamepadSelectionIndex)
         this.setGamepadSelectionIndex(index, (e.shiftKey))
       }.bind(this))
     }
 
+    // keyboad
     let keyboardItem = document.createElement('div')
     keyboardItem.className = 'menu-item'
     keyboardItem.classList.add('selected')
@@ -485,6 +509,7 @@ class GameContainer {
     gameSelectorMenu.appendChild(gamepadSelector)
     this.setGamepadSelectionIndex(this.gamepadSelectionIndex)
     
+    // actions
     let actionSelector = document.createElement('div')
     actionSelector.className = 'action-selector'
 
@@ -665,15 +690,17 @@ function toggleFullScreen() {
 }
 
 function setup() {
-  console.log("Hello Multy-Bitsy")
+  console.log("Hello Poly-Bitsy")
   
+
+
   var gamePads = new GamePads()
   gamePads.info()
-
+  // document.body.appendChild(gamePads.getHelper())
   // load game playlist
   fetch('playlist.json')
         .then(function (response) {
-            return response.json()
+          return response.json()
         })
 
         .then(function (data) {
@@ -691,7 +718,7 @@ function setup() {
          
             if (playlist.music) {
               var sound = new Sound(playlist.music, 100, true)
-              //sound.start()
+              sound.start()
             }
         })
         .catch(function (err) {
@@ -715,11 +742,11 @@ function setup() {
       document.getElementById('about').classList.toggle('hide')
     }
 
-    if (key == 'K') { 
+    if (key == 'R') { 
       document.querySelectorAll(".game-iframe").forEach(element => {
         console.log('ok')
         element.contentWindow.reset_cur_game()
-        element.contentWindow.startNarrating( "ARGG", false /*isEnding*/ );
+        //element.contentWindow.startNarrating( "ARGG", false /*isEnding*/ );
       })
       e.preventDefault()
       return
@@ -743,7 +770,7 @@ function setup() {
       document.getElementById('container').appendChild(game.getNode())
     }
 
-    if (key == 'R') { 
+    if (key == 'K') { 
       gameContainers.forEach((game) => 
         game.reload()
       )
