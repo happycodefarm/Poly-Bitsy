@@ -36,7 +36,8 @@ Il permet de définir des paramètres généraux et la listes des Bitsies jouabl
 - L'objet optionnel "music" définit un fichier mp3 à utiliser comme musique de fond.
 
 ### Interface
-![Poly-Bitsy interface](poly-bitsy.jpg)
+![Poly-Bitsy interface](poly-bitsy.jpg?raw=true)
+
 Raccourcis clavier :
 - N : Nouvelle playlist / Bitsy.
 - R : Relancer tous les jeux. 
