@@ -19,7 +19,7 @@ Poly-Bitsy est un outil de pésentation pour [Bitsy](https://www.bitsy.org) perm
 - Poly-Bitsy permet de jouer à plusieurs Bitsies indépendamment avec plusieurs gamepads sur la même page Web.
 
 ### Plusieurs gamepads <-> plusieurs bitsies <-> plusieurs page Web
-- Toutes les options de contrôle par gamepad citées ci-dessus fonctionne aussi avec plusieurs Poly-Bitsy tournant sur des pages Web séparées.
+- Toutes les options de contrôl par gamepad citées ci-dessus fonctionne aussi avec plusieurs Poly-Bitsy tournant sur des pages Web séparées.
 
 ## Configuration
 Le fichier *playlist.json* contient la configuration du Poly-Bitsy.
