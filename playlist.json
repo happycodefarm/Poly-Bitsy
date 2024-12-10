@@ -12,8 +12,6 @@
       "author": "Paulette",
       "version": 1.0,
       "preload": false,
-      "width" : "500px",
-      "height" : "500px",
       "keyboard" : true,
       "altButton" : true
     },
@@ -23,8 +21,6 @@
       "author": "Rozzze",
       "version": 1.0,
       "preload": false,
-      "width" : "20vw",
-      "height" : "20vw",
       "keyboard" : true,
       "altButton" : true
     },
@@ -46,7 +42,9 @@
       "title": "Game #5",
       "path": "games/game-5.html",
       "author": "Bip",
-      "version": 1.0
+      "version": 1.0,
+      "width" : "500px",
+      "height" : "500px"
     }
   ],
   
