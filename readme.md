@@ -1,9 +1,10 @@
 # POLY-BITSY
 
-Poly-Bitsy is (not) a type of polyphosphate that is used as a food additive.
-
 ## Description
-Poly-Bitsy est un outil pour [Bitsy](https://www.bitsy.org).
+Poly-Bitsy est un outil de pésentation pour [Bitsy](https://www.bitsy.org) permettant à la fois de créer des playlists de Bitsies et de contrôler plusieurs Bitsies simultanement ou indépendament au clavier ou avec un ou plusieurs gamepads sur une page Web.
+
+### Un gamepad <-> un bitsy
+- Poly-Bitsy permet de jouer un Bitsy avec un gamepad à la place du clavier.
 
 ### Un clavier <-> plusieurs bitsies
 - Poly-Bitsy permet de jouer à plusieurs Bitsies simultanément avec un seul clavier sur la même page Web. (aka: [Multi-Bitsy](https://switch-b.itch.io/multi-bitsy))
@@ -24,8 +25,8 @@ Il permet de définir des paramètres généraux et la listes des Bitsies jouabl
 
 - L'objet (obligatoire) *settings* definit la taille par défaut en syntaxe css de chaque bitsies.
 
-- L'objet *games* définit la liste des bitsies jouables.
-  - Chacun des bitsies est obligatoirement définit par un titre et un lien vers son fichier html ("title" et "path"). 
+- L'objet *games* définit la liste des Bitsies jouables.
+  - Chacun des Bitsies est obligatoirement définit par un titre et un lien vers son fichier html ("title" et "path"). 
   - Chacun des bitsies peux contenir différents paramètres individuels et optionnels ("width", "height", "preload", etc.. ).  
 
 - L'objet optionnel "music" définit un fichier mp3 à utiliser comme musique de fond.
