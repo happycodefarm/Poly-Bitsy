@@ -8,7 +8,7 @@
   "games": [
     {
       "title": "Game #1",
-      "path": "/games/game-1.html",
+      "path": "games/game-1.html",
       "author": "Paulette",
       "version": 1.0,
       "preload": false,
@@ -19,7 +19,7 @@
     },
     {
       "title": "Game #2",
-      "path": "/games/game-2.html",
+      "path": "games/game-2.html",
       "author": "Rozzze",
       "version": 1.0,
       "preload": false,
@@ -30,7 +30,7 @@
     },
     {
       "title": "Game #3",
-      "path": "/games/game-3.html",
+      "path": "games/game-3.html",
       "author": "Leslie",
       "preload": false,
       "version": 2.0,
@@ -38,13 +38,13 @@
     },
     {
       "title": "Game #4",
-      "path": "/games/game-4.html",
+      "path": "games/game-4.html",
       "author": "Bergamote",
       "version": 1.1
     },
     {
       "title": "Game #5",
-      "path": "/games/game-5.html",
+      "path": "games/game-5.html",
       "author": "Bip",
       "version": 1.0
     }

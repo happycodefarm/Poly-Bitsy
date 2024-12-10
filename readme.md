@@ -1,5 +1,6 @@
 # POLY-BITSY
 
+
 ## Déscription
 Poly-Bitsy est un outil de pésentation pour [Bitsy](https://www.bitsy.org) permettant à la fois de créer des playlists de Bitsies et de contrôler plusieurs Bitsies simultanement ou indépendament au clavier ou avec un ou plusieurs gamepads sur une page Web.
 
@@ -47,3 +48,5 @@ Il permet de définir des paramètres généraux et la listes des Bitsies jouabl
 
 > D'autres techniques sont possibles: https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Tools_and_setup/set_up_a_local_testing_server
 
+### Démo en ligne
+https://happycodefarm.github.io/Poly-Bitsy/
