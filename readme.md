@@ -33,9 +33,11 @@ Il permet de définir des paramètres généraux et la listes des Bitsies jouabl
 ### Limitations
 Pour avoir accès au gamepads Poly-Bisty a besoin d'être hébergé sur un serveur Web.
 
-> Pour utiliser Poly-Bitsy sur un ordinateur, un serveur Web peut être localement initié depuis le terminal (Linux, MacOs) ou l'invité de commande (Windows) en executant cette commande depuis le dossier racine du Poly-Bitsy :
+> Pour utiliser Poly-Bitsy sur un ordinateur, un serveur Web peut être localement initié depuis le terminal (Linux, MacOs) ou l'invité de commande (Windows) en exécutant cette commande depuis le dossier racine du Poly-Bitsy :
 
 > ``python3 -m http.server``
 
-> Puis d'aller à l'adresse http://127.0.0.1:8000 pour acceder à la page du Poly-Bitsy.
+> Puis d'aller à l'adresse http://127.0.0.1:8000 pour accéder à la page du Poly-Bitsy.
+
+> D'autres techniques sont possibles: https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Tools_and_setup/set_up_a_local_testing_server
 
